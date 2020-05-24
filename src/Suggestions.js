@@ -10,7 +10,7 @@ class Suggestions extends React.Component {
                         {
                             this.props.suggestions.map((item, index) => {
                                 var phrase = item.phrase;
-                                return (<button key={index} onClick={() => this.props.onclicksuggestion(phrase)} className="ml-1 btn btn-success">{item.text}</button>)
+                                return (<button key={index} onClick={() => this.props.onclicksuggestion(phrase)} className="btn btn-primary">{item.text}</button>)
                             })
                         }
                     </div>

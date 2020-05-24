@@ -7,12 +7,38 @@ import reactDOM from 'react-dom';
 import App from './App';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-
-// let store = createStore(counter);
 import allReducers from './reducers';
-let store = createStore(allReducers,
+
+
+function saveToLocalStorage(state) {
+    try {
+        const seriliazedState = JSON.stringify(state);
+        localStorage.setItem('store', seriliazedState);
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+function loadFromLocalStorage() {
+    try {
+        const serializedState = localStorage.getItem('store');
+        if (serializedState === null) return undefined;
+        return JSON.parse(serializedState);
+    } catch (err) {
+        console.log(err);
+        return undefined;
+    }
+};
+const persistedState = loadFromLocalStorage();
+console.log(persistedState);
+let store = createStore(
+    allReducers,
+    persistedState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+store.subscribe(() => saveToLocalStorage(store.getState()));
 
 // store.dispatch(increment());
 

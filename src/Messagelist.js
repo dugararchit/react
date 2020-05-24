@@ -25,29 +25,31 @@ class Messagelist extends React.Component {
         return (
             <ul className="messages" ref={(el) => { this.messagesEnd = el; }}>
                 {this.props.sender.map((item, index) => {
-                    
+
                     var receiver = "";
                     if (this.props.receiver[index] && this.props.receiver[index].length > 0) {
                         receiver = <li className="message left appeared">
-                            <div className="avatar"></div>
+                            <div className="avatar"><img src="/chatbot/img/bot.png" alt="bot" /></div>
                             <div className="text_wrapper">
                                 <div className="text" dangerouslySetInnerHTML={{ __html: this.props.receiver[index] }}></div>
                             </div>
                         </li>
                     }
                     if (index === 0) {
-                        receiver = <li className="message right appeared">
-                            <div className="avatar"></div>
-                            <div className="list-group px-2">
-                                <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("field operator")}><b>Steps- Field Operator</b></button>
-                                <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("property source")} ><b>Steps- Property source</b></button>
-                                <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("Hi")}><b>Say hi to bot</b></button>
-                            </div>
-                        </li>
+                        receiver = <div>
+                            <li className="message right appeared">
+                                <div className="avatar"><img src="/chatbot/img/bot.png" alt="bot" /></div>
+                                <div className="list-group px-2">
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("field operator")}><b>Steps- Field Operator</b></button>
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("property source")} ><b>Steps- Property source</b></button>
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("Hi")}><b>Say hi to bot</b></button>
+                                </div>
+                            </li>
+                        </div>
                     }
                     return (<div key={index}>
                         <li className="message right appeared">
-                            <div className="avatar"></div>
+                            <div className="avatar"><img src="/chatbot/img/user.png" alt="bot" /></div>
                             <div className="text_wrapper">
                                 <div className="text"> {item} </div>
                             </div>

@@ -1,53 +1,25 @@
 import React from 'react';
-// import SpeechRecognition from 'react-speech-recognition';
 import "./App.css";
 import Messagelist from './Messagelist';
+import Chathomepage from './chathomepage';
 import { detectIntent } from './services';
 import { connect } from 'react-redux';
-import { increment, decrement } from './actions';
-// import { BsFillMicFill, BsThreeDots } from "react-icons/bs";
-// import ReactDOMServer from 'react-dom/server';
-
-import Speech from 'speak-tts';
-
-const speech = new Speech();
-if (speech.hasBrowserSupport()) { // returns a boolean
-    console.log("speech synthesis supported")
-}
-
-speech.init({
-    'volume': 1,
-    'lang': 'en-GB',
-    'rate': 1,
-    'pitch': 1,
-    'voice': 'Google UK English Female',
-    'splitSentences': true,
-    'listeners': {
-        'onvoiceschanged': (voices) => {
-            console.log("Event voiceschanged", voices)
-        }
-    }
-}).then((data) => {
-    // The "data" object contains the list of available voices and the voice synthesis params
-    console.log("Speech is ready, voices are available", data)
-}).catch(e => {
-    console.error("An error occured while initializing : ", e)
-})
+import { increment, decrement, senderMessage, receiverMessage, resetMessages} from './actions';
 
 class App extends React.Component {
 
     constructor() {
-        console.log(increment);
         super();
         this.state = {
-            sender: ["Hi I am Bot!!! What can I do for you today..."],
-            receiver: [""],
+            // sender: ["Hi I am Bot!!! What can I do for you today..."],
+            // receiver: [""],
             suggestions: [],
-            showBot: false
+            showBot: true,
+            showBotText: "X",
         }
         this.onClickSend = this.onClickSend.bind(this);
         this.toggleShowBot = this.toggleShowBot.bind(this);
-
+        
     }
 
 
@@ -65,48 +37,43 @@ class App extends React.Component {
     onClickSend(queryText) {
         var message = (queryText) ? queryText : document.getElementById("sendermessage").value.trim();
         if (message) {
-            this.setState({
-                sender: [...this.state.sender, message]
-            })
+            // this.setState({
+            //     sender: [...this.state.sender, message]
+            // })
+            this.props.senderMessage(message);
             document.getElementById("sendermessage").value = "";
             this.setState({
                 suggestions: []
             })
             detectIntent(message).then(data => {
                 if (data.success && data.message) {
-                    // var message = data.message;
-                    // speech.speak({
-                    //     text: message,
-                    // }).then(() => {
-                    //     console.log("Success !")
-                    // }).catch(e => {
-                    //     console.error("An error occurred :", e)
-                    // })
-
                     if (data.suggestions.length > 0) {
                         this.setState({
                             suggestions: data.suggestions
                         })
                     }
-                    this.setState({
-                        receiver: [...this.state.receiver, data.message]
-                    })
+                    // this.setState({
+                    //     receiver: [...this.state.receiver, data.message]
+                    // })
+                    this.props.receiverMessage(data.message);
                 } else {
                     let message = "There is an error while processing your request, please try after sometime.";
 
-                    this.setState({
-                        receiver: [...this.state.receiver, message]
-                    })
+                    // this.setState({
+                    //     receiver: [...this.state.receiver, message]
+                    // })
+                    this.props.receiverMessage(message);
                 }
             }).catch(err => {
                 console.log(err);
                 var message = "There is an error while processing your request, please try after sometime.";
-                this.setState({
-                    receiver: [...this.state.receiver, message]
-                })
-                this.setState({
-                    receiver: [...this.state.receiver, message]
-                })
+                // this.setState({
+                //     receiver: [...this.state.receiver, message]
+                // })
+                // this.setState({
+                //     receiver: [...this.state.receiver, message]
+                // })
+                this.props.receiverMessage(message);
             })
         } else {
             alert("Please Enter message");
@@ -114,27 +81,30 @@ class App extends React.Component {
     }
 
     toggleShowBot() {
+        var botMessage = "X";
+        if (this.state.showBot === true) {
+            botMessage = "Lets chat";
+        }
         this.setState({
-            showBot: !this.state.showBot
+            showBot: !this.state.showBot,
+            showBotText: botMessage
         })
     }
-
-
 
     render() {
 
         //const { transcript, resetTranscript, startListening, stopListening } = this.props;
-        var showBotClass = this.state.showBot ? 'chat_window' : 'chat_window d-none';
+        var showBotClass = this.state.showBot ? 'chat_window animated bounceOutLeft' : 'chat_window d-none';
 
         return (
 
 
             <div className="container">
-
-                <button className="btn btn-primary bottombutton" onClick={e => this.toggleShowBot()}>Click Me</button>
-                <button onClick={() => this.props.increment()}> + </button>
+                <Chathomepage></Chathomepage>
+                <button className="btn btn-primary bottombutton" onClick={e => this.toggleShowBot()}>{this.state.showBotText}</button>
+                {/*                 <button onClick={() => this.props.increment()}> + </button>
                 <button onClick={() => this.props.decrement()}> - </button>
-                <h1>Counter: {this.props.counter}</h1>
+                <h1>Counter: {this.props.counter}</h1> */}
 
                 <div className={showBotClass}>
 
@@ -143,8 +113,8 @@ class App extends React.Component {
                     </div>
                     <Messagelist onclicksuggestion={(querytext) => {
                         this.onClickSend(querytext);
-                    }} sender={this.state.sender}
-                        receiver={this.state.receiver}
+                    }} sender={this.props.sender}
+                        receiver={this.props.receiver}
                         suggestions={this.state.suggestions}
                     ></Messagelist>
 
@@ -159,22 +129,18 @@ class App extends React.Component {
                         <div className="send_message">
                             <div className="icon"></div>
                             <div className="text" onClick={() => {
+                                this.props.resetMessages();
+                                this.setState({
+                                    suggestions: []
+                                })
+                            }}>Reset</div>
+                        </div>
+                        <div className="send_message">
+                            <div className="icon"></div>
+                            <div className="text" onClick={() => {
                                 this.onClickSend()
                             }}>Send</div>
                         </div>
-
-                        {/* <div className="send_message">
-                            <div className="text" id="mic" onClick={(e) => {
-                                document.getElementById("mic").innerHTML = ReactDOMServer.renderToString(<BsThreeDots></BsThreeDots>);
-                                resetTranscript();
-                                startListening();
-                                setTimeout(() => {
-                                    stopListening();
-                                    this.onClickSend(document.getElementById("transcriptedvalue").innerHTML);
-                                    document.getElementById("mic").innerHTML = ReactDOMServer.renderToString(<BsFillMicFill></BsFillMicFill>);
-                                }, 5000)
-                            }}><BsFillMicFill>...</BsFillMicFill></div>
-                        </div> */}
                     </div>
 
 
@@ -191,16 +157,22 @@ class App extends React.Component {
         )
     }
 };
+
 const mapStateToProps = (state) => {
     return {
-        counter: state.counter
+        counter: state.counter,
+        sender: state.sender,
+        receiver: state.receiver
     }
 };
 
 const mapDispatchToProps = () => {
     return {
         increment,
-        decrement
+        decrement,
+        senderMessage,
+        receiverMessage,
+        resetMessages
     };
 }
 
