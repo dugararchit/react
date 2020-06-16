@@ -1,5 +1,8 @@
-export const detectIntent = (message) => fetch(`https://gpmuk.com/chatbot/apicore/?query=${message}`)
+export const detectIntent = (message, randomuserid) => fetch(`https://gpmuk.com/chatbot/allyapicore/?query=${message}&userid=${randomuserid}`)
     .then(response => response.json())
 
-// export const detectIntent1 = (message) => fetch(`http://localhost/chatbot/apicore/?query=${message}`)
+// export const detectIntent = (message, randomuserid) => fetch(`http://localhost/chatbot/apicore/?query=${message}&userid=${randomuserid}`)
 //     .then(response => response.json())
+
+
+https://gpmuk.com/chatbot/allyapicore/

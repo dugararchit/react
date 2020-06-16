@@ -40,8 +40,8 @@ class Messagelist extends React.Component {
                             <li className="message right appeared">
                                 <div className="avatar"><img src="/chatbot/img/bot.png" alt="bot" /></div>
                                 <div className="list-group px-2">
-                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("field operator")}><b>Steps- Field Operator</b></button>
-                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("property source")} ><b>Steps- Property source</b></button>
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("about us")}><b>About us</b></button>
+                                    <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("subscribe")} ><b>Subscribe</b></button>
                                     <button type="button" className="list-group-item list-group-item-action" onClick={() => this.props.onclicksuggestion("Hi")}><b>Say hi to bot</b></button>
                                 </div>
                             </li>

@@ -1,25 +1,26 @@
 import React from 'react';
 import "./App.css";
 import Messagelist from './Messagelist';
-import Chathomepage from './chathomepage';
 import { detectIntent } from './services';
 import { connect } from 'react-redux';
-import { increment, decrement, senderMessage, receiverMessage, resetMessages} from './actions';
+import { increment, decrement, senderMessage, receiverMessage, resetMessages } from './actions';
 
 class App extends React.Component {
 
     constructor() {
         super();
+        var randomuserid = localStorage.setItem('randomuserid', Math.floor(Math.random() * 10000));
         this.state = {
             // sender: ["Hi I am Bot!!! What can I do for you today..."],
             // receiver: [""],
             suggestions: [],
             showBot: true,
             showBotText: "X",
+            randomuserid: localStorage.getItem('randomuserid')
         }
         this.onClickSend = this.onClickSend.bind(this);
         this.toggleShowBot = this.toggleShowBot.bind(this);
-        
+
     }
 
 
@@ -45,7 +46,8 @@ class App extends React.Component {
             this.setState({
                 suggestions: []
             })
-            detectIntent(message).then(data => {
+            console.log(this.state);
+            detectIntent(message, this.state.randomuserid).then(data => {
                 if (data.success && data.message) {
                     if (data.suggestions.length > 0) {
                         this.setState({
@@ -83,7 +85,7 @@ class App extends React.Component {
     toggleShowBot() {
         var botMessage = "X";
         if (this.state.showBot === true) {
-            botMessage = "Lets chat";
+            botMessage = "Help Guide";
         }
         this.setState({
             showBot: !this.state.showBot,
@@ -100,8 +102,7 @@ class App extends React.Component {
 
 
             <div className="container">
-                <Chathomepage></Chathomepage>
-                <button className="btn btn-primary bottombutton" onClick={e => this.toggleShowBot()}>{this.state.showBotText}</button>
+                <button className="btn btn-danger bottombutton" id="letchatsbutton" onClick={e => this.toggleShowBot()}>{this.state.showBotText}</button>
                 {/*                 <button onClick={() => this.props.increment()}> + </button>
                 <button onClick={() => this.props.decrement()}> - </button>
                 <h1>Counter: {this.props.counter}</h1> */}
@@ -109,7 +110,7 @@ class App extends React.Component {
                 <div className={showBotClass}>
 
                     <div className="top_menu">
-                        <div className="title">Chat</div>
+                        <div className="title">Ally Sofwares Chatbot</div>
                     </div>
                     <Messagelist onclicksuggestion={(querytext) => {
                         this.onClickSend(querytext);

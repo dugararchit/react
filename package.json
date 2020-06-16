@@ -2,7 +2,7 @@
   "name": "myapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://gpmuk.com/chatbot/",
+  "homepage": "http://gpmuk.com/",
   "dependencies": {
     "bootstrap": "^4.5.0",
     "cra-template": "1.0.3",

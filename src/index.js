@@ -31,7 +31,7 @@ function loadFromLocalStorage() {
     }
 };
 const persistedState = loadFromLocalStorage();
-console.log(persistedState);
+
 let store = createStore(
     allReducers,
     persistedState,
