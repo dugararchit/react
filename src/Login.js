@@ -5,32 +5,56 @@ import { navigate } from "@reach/router";
 class Login extends Component {
     constructor() {
         super();
+
         this.state = {
             email: '',
             password: '',
             formSuccess: false,
-            theMessage: ""
+            theMessage: "",
+            rememberme: false
         };
+
         this.handleChange = this.handleChange.bind(this);
         this.formSubmit = this.formSubmit.bind(this);
     }
 
+    componentDidMount() {
+        
+        if (localStorage.getItem("userdetails") != null) {
+            var jsonParse = JSON.parse(localStorage.getItem("userdetails"));
+            // alert(jsonParse.pass);
+            this.setState({
+                email: jsonParse.email,
+                password: jsonParse.pass,
+                rememberme: true
+            });
+            
+        }
+    }
+
     async formSubmit(e) {
         e.preventDefault();
-        alert("Submitting Form");
         try {
             const { user } = await auth.signInWithEmailAndPassword(this.state.email, this.state.password);
             console.log(user);
             if (!user) alert("User not logged in!!! Please try after sometime");
-            else this.props.updateUserDetail(user);
+            else {
+                this.props.updateUserDetail(user);
+                if (this.state.rememberme == true)
+                    localStorage.setItem("userdetails", JSON.stringify({ email: this.state.email, pass: this.state.password }))
+                else
+                    localStorage.removeItem("userdetails");
+            }
             this.setState({
                 email: '',
-                password: ''
+                password: '',
+                rememberme: false
             });
+            document.getElementById("rememberme").checked = false;
             navigate("/");
         } catch (error) {
             console.log(error);
-            if(error.code === "auth/user-not-found"){
+            if (error.code === "auth/user-not-found") {
                 error.message = "Invalid user please try with another user";
             }
             this.setState({
@@ -43,7 +67,12 @@ class Login extends Component {
 
     handleChange(e) {
         const itemName = e.target.name;
-        const itemValue = e.target.value;
+        var itemValue = e.target.value;
+
+        if (itemName === "rememberme") {
+            itemValue = e.target.checked
+        }
+
         this.setState({ [itemName]: itemValue });
     }
 
@@ -82,10 +111,16 @@ class Login extends Component {
                                                 type="password"
                                                 name="password"
                                                 placeholder="Password"
-                                                value={this.state.passOne}
+                                                value={this.state.password}
                                                 onChange={this.handleChange}
                                             />
                                         </section>
+                                    </div>
+                                    <div className="form-group form-check">
+                                        <input type="checkbox" checked={this.state.rememberme} id="rememberme" className="form-check-input"
+                                            name="rememberme"
+                                            onChange={this.handleChange} />
+                                        <label className="form-check-label" htmlFor="remember">Remember me</label>
                                     </div>
                                     <div className="form-group text-right mb-0">
                                         <button className="btn btn-primary" type="submit">

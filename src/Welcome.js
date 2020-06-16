@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from "@reach/router"
+
 class Welcome extends Component {
     render() {
-        const { user, signOutUser } = this.props;
+        const { displayName, userId } = this.props;
         return (
             <div className="text-center mt-4">
-                <span className="text-secondary font-weight-bold pl-1">
-                    Welcome {user}
+                <span >
+                    Welcome  
                 </span>
-        ,
-                <Link onClick={(e) => signOutUser(e)} className="nav-item nav-link" to="/">
-                    log out
-              </Link>
+        <span className="text-secondary font-weight-bold pl-1"> {displayName}</span>
             </div>
         );
     }

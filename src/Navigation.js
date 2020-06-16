@@ -4,6 +4,7 @@ import { Link } from "@reach/router"
 class Navigation extends Component {
   render() {
     const { user, signOutUser } = this.props;
+    
     return (
       <nav className="site-nav family-sans navbar navbar-expand bg-primary navbar-dark higher">
         <div className="container-fluid">
@@ -27,7 +28,7 @@ class Navigation extends Component {
               </Link>
             )}
             {user && (
-              <Link onClick={(e) => signOutUser(e)} className="nav-item nav-link" to="/">
+              <Link onClick={(e) => signOutUser(e)} className="nav-item nav-link" to="">
                 log out
               </Link>
             )}
