@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "513563616376",
+    "firebase_url": "https://jfwelder-1533900748734.firebaseio.com",
+    "project_id": "jfwelder-1533900748734",
+    "storage_bucket": "jfwelder-1533900748734.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513563616376:android:9bd525f735a97e7d47b98d",
+        "android_client_info": {
+          "package_name": "test_app.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513563616376-pp30e8shi6bce4n1nag371qugqt0g7sr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAh97g-wHYW8QWJObo31EmXvSx7mwvsVOU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513563616376-pp30e8shi6bce4n1nag371qugqt0g7sr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

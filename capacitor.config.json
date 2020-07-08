@@ -1,0 +1,9 @@
+{
+    "appId": "test_app.com",
+    "appName": "titandashboard",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {},
+    "linuxAndroidStudioPath": "/home/archit/Downloads/android-studio/bin/studio.sh"
+}
