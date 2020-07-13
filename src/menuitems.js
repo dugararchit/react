@@ -77,7 +77,7 @@ class Menuitems extends React.Component {
       <div>
         <NavBar></NavBar>
           {
-            (this.state.rid != "") ? <About rid={this.state.rid}></About>: null 
+            (this.state.rid !== "") ? <About rid={this.state.rid}></About>: null 
           }
           
           <div id="restaurant-menu">

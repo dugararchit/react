@@ -3,8 +3,7 @@ import "./App.css";
 import { BarcodeScanner } from "@ionic-native/barcode-scanner";
 import { navigate } from "@reach/router";
 //===in app browser
-import { Plugins } from "@capacitor/core";
-const { Browser } = Plugins;
+
 
 class Home extends React.Component {
   constructor() {
@@ -51,9 +50,7 @@ class Home extends React.Component {
       );
     };
 
-    const gotolink = async () => {
-      await Browser.open({ url: "http://capacitorjs.com/", location: "no" });
-    };
+  
     return (
       <div>
         <header id="header">
