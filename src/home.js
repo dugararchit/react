@@ -35,20 +35,20 @@ class Home extends React.Component {
       }
     };
 
-    const generateCode = () => {
-      BarcodeScanner.encode(
-        BarcodeScanner.Encode.TEXT_TYPE,
-        this.state.encodeData
-      ).then(
-        (data) => {
-          console.log(data);
-          //this.setState({ textToEncode: encodedData });
-        },
-        (err) => {
-          console.log("Error occured : " + err);
-        }
-      );
-    };
+    // const generateCode = () => {
+    //   BarcodeScanner.encode(
+    //     BarcodeScanner.Encode.TEXT_TYPE,
+    //     this.state.encodeData
+    //   ).then(
+    //     (data) => {
+    //       console.log(data);
+    //       //this.setState({ textToEncode: encodedData });
+    //     },
+    //     (err) => {
+    //       console.log("Error occured : " + err);
+    //     }
+    //   );
+    // };
 
   
     return (
@@ -93,7 +93,7 @@ class Home extends React.Component {
             Create
           </button>
         </div> */}
-        <input
+        {/* <input
           type="text"
           name="encodeData"
           value={this.state.encodeData}
@@ -103,7 +103,7 @@ class Home extends React.Component {
 
         <button className="btn btn-primary" onClick={generateCode}>
           Generate Code
-        </button>
+        </button> */}
       </div>
     );
   }
