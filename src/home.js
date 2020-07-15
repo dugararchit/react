@@ -59,8 +59,8 @@ class Home extends React.Component {
               <div className="container">
                 <div className="row">
                   <div className="intro-text">
-                    <h1>Scan It</h1>
-                    <p>New world/ New Digital Menu</p>
+                    <h1>mScan</h1>
+                    <p>New Digital World / New Digital Menu</p>
                     <button
                       onClick={scanCode}
                       className="btn btn-success page-scroll"
