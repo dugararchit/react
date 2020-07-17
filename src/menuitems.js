@@ -108,13 +108,14 @@ class Menuitems extends React.Component {
                                     {" "}
                                     {datamenu.menuname}{" "}
                                   </div>
-                                  <div className="menu-item-price">
-                                    {" "}
-                                    Rs. {datamenu.price}{" "}
-                                  </div>
+                                 
                                   <div className="menu-item-description">
                                     {" "}
                                     {datamenu.sd}{" "}
+                                  </div>
+                                  <div className="menu-item-price">
+                                    {" "}
+                                    Rs. {datamenu.price}{" "}
                                   </div>
                                 </div>
                               );
