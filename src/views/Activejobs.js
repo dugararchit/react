@@ -15,13 +15,14 @@ class Activejobs extends React.Component {
       capturedImage: "",
       latitude: "",
       longitude: "",
-      msg: ""
+      msg: "",
+      isDisabled: false
     };
   }
 
   async takePicture() {
     const image = await Camera.getPhoto({
-      quality: 90,
+      quality: 50,
       allowEditing: false,
       resultType: CameraResultType.Base64,
     });
@@ -80,9 +81,15 @@ class Activejobs extends React.Component {
       }),
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
+    this.setState({
+      isDisabled: true
+    })
     fetch(`https://gpmuk.com/loginreg/updatecompletionstatus.php`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        this.setState({
+          isDisabled: false
+        })
         this.props.history.push("/admin/dashboard");
         if (data.success === 1) {
           console.log("Status Updated");
@@ -90,6 +97,9 @@ class Activejobs extends React.Component {
       })
       .catch((err) => {
         console.log(err);
+        this.setState({
+          isDisabled: false
+        })
         this.setState({
           msg: "Error while processing request, please try after sometime"
         });
@@ -125,6 +135,7 @@ class Activejobs extends React.Component {
                 className="btn btn-primary"
                 onClick={(e) => this.completedJobStatus()}
                 type="button"
+                disabled={this.state.isDisabled}
               >
                 Completed
               </button>
