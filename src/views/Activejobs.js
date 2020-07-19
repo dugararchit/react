@@ -3,6 +3,7 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { Plugins, CameraResultType } from "@capacitor/core";
 import { isMobile } from "react-device-detect";
+
 const { Camera, Geolocation } = Plugins;
 class Activejobs extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Activejobs extends React.Component {
       capturedImage: "",
       latitude: "",
       longitude: "",
+      msg: ""
     };
   }
 
@@ -72,19 +74,25 @@ class Activejobs extends React.Component {
         issueid: this.state.availableId,
         notes: this.state.completednotes,
         status: 2,
-        siteimage: this.state.capturedImage
+        siteimage: this.state.capturedImage,
+        latitude: this.state.latitude,
+        longitude: this.state.longitude
       }),
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
-    fetch(`https://gpmuk.com/loginreg/updatecompletionstatus.php`, requestOptions)
+    fetch(`https://gpmuk.com/loginreg/updastecompletionstatus.php`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        this.props.history.push("/admin/dashboard");
         if (data.success === 1) {
           console.log("Status Updated");
         } else console.log("No Data or error", data);
       })
       .catch((err) => {
         console.log(err);
+        this.setState({
+          msg: "Error while processing request, please try after sometime"
+        });
       });
   };
 
@@ -95,7 +103,7 @@ class Activejobs extends React.Component {
           <form>
             <div className="form-group">
               <label htmlFor="exampleFormControlTextarea1">
-                Enter Notes of completiong
+                Enter Notes of completion
               </label>
               <textarea
                 className="form-control"
@@ -116,11 +124,15 @@ class Activejobs extends React.Component {
               <button
                 className="btn btn-primary"
                 onClick={(e) => this.completedJobStatus()}
+                type="button"
               >
                 Completed
               </button>
+              
             </div>
+
           </form>
+              <span>{this.state.msg}</span>
           {/* <button
             className="btn btn-primary"
             

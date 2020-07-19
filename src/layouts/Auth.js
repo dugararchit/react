@@ -10,6 +10,7 @@ class Dashboard extends React.Component {
       email: "",
       password: "",
       msg: "",
+      isDisabled: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
@@ -21,7 +22,10 @@ class Dashboard extends React.Component {
     this.setState({ [itemName]: itemValue });
   }
 
-  formSubmit(e) {
+  formSubmit = (e) =>  {
+    this.setState({
+      isDisabled: true
+    });
     e.preventDefault();
     console.log(this.state.email, this.state.password);
     const requestOptions = {
@@ -38,7 +42,10 @@ class Dashboard extends React.Component {
       fetch("https://gpmuk.com/loginreg/login.php", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          
+          this.setState({
+            isDisabled: false
+          });
           // this.props.token = "QpwL5tke4Pnpja7X4";
           if (data.success) {
             localStorage.setItem("userData", data.token);
@@ -50,9 +57,14 @@ class Dashboard extends React.Component {
               msg: data.message,
             });
           }
+          
         })
         .catch((err) => {
           console.log(err);
+          this.setState({
+            isDisabled: false,
+            msg: "Error while processing your request, please try after sometime"
+          });
           //this.props.history.push("/register");
         });
     } catch (err) {
@@ -98,7 +110,7 @@ class Dashboard extends React.Component {
                   </div>
                   <span>{this.state.msg}</span>
                   <br />
-                  <button type="submit" className="btn btn-black">
+                  <button type="submit" className="btn btn-black" disabled={this.state.isDisabled}>
                     Login
                   </button>
                   <NavLink className="btn btn-warning" to="register">

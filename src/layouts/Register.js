@@ -14,6 +14,7 @@ class Dashboard extends React.Component {
       password: "",
       msg: "",
       pushtoken: "",
+      isDisabled: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
@@ -42,7 +43,10 @@ class Dashboard extends React.Component {
     this.setState({ [itemName]: itemValue });
   }
 
-  formSubmit(e) {
+  formSubmit = (e) =>  {
+    this.setState({
+      isDisabled: true
+    });
     e.preventDefault();
     console.log(this.state.username, this.state.password);
     PushNotifications.register();
@@ -71,11 +75,16 @@ class Dashboard extends React.Component {
             this.setState({
               msg: data.message,
             });
+
+            this.setState({
+              isDisabled: false
+            });
         })
         .catch((err) => {
           console.log(err);
           this.setState({
-            msg: err,
+            msg: "Error while processing your request please try after sometime",
+            isDisabled: false
           });
         });
     });
@@ -132,7 +141,7 @@ class Dashboard extends React.Component {
                   <span>{this.state.msg}</span>
                   <br />
                   
-                  <button type="submit" className="btn btn-black">
+                  <button type="submit" className="btn btn-black" disabled={this.state.isDisabled}>
                     Register
                   </button>
                   <br />
