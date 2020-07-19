@@ -16,7 +16,8 @@ class Activejobs extends React.Component {
       latitude: "",
       longitude: "",
       msg: "",
-      isDisabled: false
+      isDisabled: false,
+      completedMsg: "Please take site picture",
     };
   }
 
@@ -77,32 +78,42 @@ class Activejobs extends React.Component {
         status: 2,
         siteimage: this.state.capturedImage,
         latitude: this.state.latitude,
-        longitude: this.state.longitude
+        longitude: this.state.longitude,
       }),
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
     this.setState({
-      isDisabled: true
-    })
-    fetch(`https://gpmuk.com/loginreg/updatecompletionstatus.php`, requestOptions)
+      isDisabled: true,
+    });
+    
+    fetch(
+      `https://gpmuk.com/loginreg/updatecompletionstatus.php`,
+      requestOptions
+    )
       .then((response) => response.json())
       .then((data) => {
         this.setState({
-          isDisabled: false
-        })
-        
+          isDisabled: false,
+        });
+
         if (data.success === 1) {
           console.log("Status Updated");
-          this.props.history.push("/admin/dashboard");
+          this.setState({
+            completedMsg: "Submitted  successfully"
+          });
+          setTimeout(() => {
+            this.props.history.push("/admin/dashboard");
+          }, 2000)
+          
         } else console.log("No Data or error", data);
       })
       .catch((err) => {
         console.log(err);
         this.setState({
-          isDisabled: false
-        })
+          isDisabled: false,
+        });
         this.setState({
-          msg: "Error while processing request, please try after sometime"
+          msg: "Error while processing request, please try after sometime",
         });
       });
   };
@@ -125,12 +136,18 @@ class Activejobs extends React.Component {
                 onChange={(e) => this.handleChangeNotes(e)}
               ></textarea>
               {isMobile ? (
-                <button
-                  className="btn btn-primary" type="button"
-                  onClick={(e) => this.takePicture()}
-                >
-                  Capture image
-                </button>
+                <div>
+                  <br />
+                  <span>{this.state.completedMsg}</span>
+                  <br />
+                  <button
+                    className="btn btn-warning btn-sm"
+                    type="button"
+                    onClick={(e) => this.takePicture()}
+                  >
+                    Capture Site Image
+                  </button>
+                </div>
               ) : null}
               <button
                 className="btn btn-primary"
@@ -138,13 +155,11 @@ class Activejobs extends React.Component {
                 type="button"
                 disabled={this.state.isDisabled}
               >
-                Completed
+                Submit
               </button>
-              
             </div>
-
           </form>
-              <span>{this.state.msg}</span>
+          <span>{this.state.msg}</span>
           {/* <button
             className="btn btn-primary"
             

@@ -4,9 +4,7 @@ import React from "react";
 import CountUp from "react-countup";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import {
-  NavLink
-} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 class Dashboard extends React.Component {
   constructor() {
     super();
@@ -17,6 +15,7 @@ class Dashboard extends React.Component {
       openNotesModal: false,
       notessection: "",
       notesid: "",
+      notesMsg: "",
     };
   }
 
@@ -121,15 +120,21 @@ class Dashboard extends React.Component {
       }),
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
+    
     fetch(`https://gpmuk.com/loginreg/addnotetenant.php`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         if (data.success === 1) {
           this.setState({
-            openNotesModal: false,
             notessection: "",
             notesid: "",
+            notesMsg: "Notes has been submitted successfully"
           });
+          setTimeout(() => {
+            this.setState({
+              openNotesModal: false
+            });
+          }, 2000)
         } else console.log("No Data or error", data);
       })
       .catch((err) => {
@@ -143,7 +148,6 @@ class Dashboard extends React.Component {
     });
   };
 
-  
   render() {
     return (
       <>
@@ -304,6 +308,8 @@ class Dashboard extends React.Component {
                       name="notessection"
                       onChange={(e) => this.handleChangeNotes(e)}
                     ></textarea>
+                    <br />
+                    <span>{this.state.notesMsg}</span>
                   </div>
                 </ModalBody>
                 <ModalFooter>

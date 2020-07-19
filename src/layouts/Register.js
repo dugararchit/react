@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
       password: "",
       msg: "",
       pushtoken: "",
-      isDisabled: false
+      isDisabled: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.formSubmit = this.formSubmit.bind(this);
@@ -43,14 +43,14 @@ class Dashboard extends React.Component {
     this.setState({ [itemName]: itemValue });
   }
 
-  formSubmit = (e) =>  {
+  formSubmit = (e) => {
     this.setState({
-      isDisabled: true
+      isDisabled: true,
     });
     e.preventDefault();
     console.log(this.state.username, this.state.password);
-    
-    PushNotifications.requestPermission().then( result => {
+
+    PushNotifications.requestPermission().then((result) => {
       if (result.granted) {
         // Register with Apple / Google to receive push via APNS/FCM
         PushNotifications.register();
@@ -58,11 +58,10 @@ class Dashboard extends React.Component {
         // Show some error
       }
     });
-    
 
     PushNotifications.addListener("registration", (token) => {
       console.log("Push registration success, token: " + token.value);
-      
+
       const requestOptions = {
         method: "POST",
         body: JSON.stringify({
@@ -79,25 +78,32 @@ class Dashboard extends React.Component {
           console.log(data);
           // this.props.token = "QpwL5tke4Pnpja7X4";
           if (data.success === 1) {
+            setTimeout(() => {
+              this.setState({
+                msg: "Successfully logged in, redirecting you to login page",
+              });
+            }, 3000);
+
             this.props.history.push("/login");
           } else
             this.setState({
               msg: data.message,
             });
 
-            this.setState({
-              isDisabled: false
-            });
+          this.setState({
+            isDisabled: false,
+          });
         })
         .catch((err) => {
           console.log(err);
           this.setState({
-            msg: "Error while processing your request please try after sometime",
-            isDisabled: false
+            msg:
+              "Error while processing your request please try after sometime",
+            isDisabled: false,
           });
         });
     });
-  }
+  };
 
   render() {
     return (
@@ -149,16 +155,16 @@ class Dashboard extends React.Component {
                   </div>
                   <span>{this.state.msg}</span>
                   <br />
-                  
-                  <button type="submit" className="btn btn-black" disabled={this.state.isDisabled}>
+                  <button
+                    type="submit"
+                    className="btn btn-black"
+                    disabled={this.state.isDisabled}
+                  >
                     Register
                   </button>
                   <br />
                   Already a member, please &nbsp;
-                  <NavLink to="login">
-                    Login
-                  </NavLink>
-                  
+                  <NavLink to="login">Login</NavLink>
                 </form>
               </div>
             </div>
