@@ -78,13 +78,13 @@ class Dashboard extends React.Component {
           console.log(data);
           // this.props.token = "QpwL5tke4Pnpja7X4";
           if (data.success === 1) {
-            setTimeout(() => {
-              this.setState({
-                msg: "Successfully logged in, redirecting you to login page",
-              });
-            }, 3000);
+            this.setState({
+              msg: "Successfully logged in, redirecting you to login page",
+            });
 
-            this.props.history.push("/login");
+            setTimeout(() => {
+              this.props.history.push("/login");
+            }, 3000);
           } else
             this.setState({
               msg: data.message,
