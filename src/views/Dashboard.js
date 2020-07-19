@@ -4,9 +4,7 @@ import React from "react";
 import CountUp from "react-countup";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import {
-  NavLink
-} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 class Dashboard extends React.Component {
   constructor() {
     super();
@@ -143,7 +141,6 @@ class Dashboard extends React.Component {
     });
   };
 
-  
   render() {
     return (
       <>
@@ -282,7 +279,15 @@ class Dashboard extends React.Component {
                         Completed
                       </NavLink>
                     </div>
-                  ) : null}
+                  ) : (
+                    <NavLink
+                      type="button"
+                      className="btn btn-success ml-3"
+                      to={"/admin/activejobs/" + element.id}
+                    >
+                      Completed
+                    </NavLink>
+                  )}
                 </div>
               );
             })}
