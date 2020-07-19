@@ -80,7 +80,7 @@ class Activejobs extends React.Component {
       }),
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
-    fetch(`https://gpmuk.com/loginreg/updastecompletionstatus.php`, requestOptions)
+    fetch(`https://gpmuk.com/loginreg/updatecompletionstatus.php`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
         this.props.history.push("/admin/dashboard");
