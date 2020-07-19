@@ -49,7 +49,16 @@ class Dashboard extends React.Component {
     });
     e.preventDefault();
     console.log(this.state.username, this.state.password);
-    PushNotifications.register();
+    
+    PushNotifications.requestPermission().then( result => {
+      if (result.granted) {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register();
+      } else {
+        // Show some error
+      }
+    });
+    
 
     PushNotifications.addListener("registration", (token) => {
       console.log("Push registration success, token: " + token.value);
