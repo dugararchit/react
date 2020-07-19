@@ -115,7 +115,7 @@ class Activejobs extends React.Component {
               ></textarea>
               {isMobile ? (
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary" type="button"
                   onClick={(e) => this.takePicture()}
                 >
                   Capture image
