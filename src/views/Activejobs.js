@@ -90,9 +90,10 @@ class Activejobs extends React.Component {
         this.setState({
           isDisabled: false
         })
-        this.props.history.push("/admin/dashboard");
+        
         if (data.success === 1) {
           console.log("Status Updated");
+          this.props.history.push("/admin/dashboard");
         } else console.log("No Data or error", data);
       })
       .catch((err) => {
