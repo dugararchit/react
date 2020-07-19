@@ -4,7 +4,9 @@ import React from "react";
 import CountUp from "react-countup";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import {
+  NavLink
+} from "react-router-dom";
 class Dashboard extends React.Component {
   constructor() {
     super();
@@ -141,6 +143,7 @@ class Dashboard extends React.Component {
     });
   };
 
+  
   render() {
     return (
       <>
@@ -219,13 +222,6 @@ class Dashboard extends React.Component {
                 <Card>
                   <CardHeader style={{ backgroundColor: "grey" }}>
                     <CardTitle tag="h4">Active jobs</CardTitle>
-                    <NavLink
-                      type="button"
-                      className="btn btn-success ml-3"
-                      to={"/admin/activejobs/9"}
-                    >
-                      Completed
-                    </NavLink>
                   </CardHeader>
                 </Card>
               </Col>
