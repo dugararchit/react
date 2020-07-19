@@ -40,7 +40,7 @@ class Activejobs extends React.Component {
   }
 
   componentDidMount() {
-    const id = this.props.match.params.id;
+//    const id = this.props.match.params.id;
   }
 
   render() {

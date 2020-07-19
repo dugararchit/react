@@ -1,18 +1,9 @@
 import React from "react";
 
-
 // react plugin used to create charts
 import CountUp from "react-countup";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Row,
-  Col,
-} from "reactstrap";
-
-
+import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 class Dashboard extends React.Component {
   constructor() {
@@ -21,12 +12,13 @@ class Dashboard extends React.Component {
       operatorData: [],
       jobscompletedlength: 0,
       revenueearner: 0,
+      openNotesModal: false,
+      notessection: "",
+      notesid: "",
     };
   }
 
-
   componentDidMount() {
-    
     const requestOptions = {
       method: "POST",
       body: JSON.stringify({
@@ -81,8 +73,75 @@ class Dashboard extends React.Component {
         console.log(err);
       });
   }
+
+  handleJobStatus = (issueId, status) => {
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({
+        email: localStorage.getItem("userEmail"),
+        issueid: issueId,
+        status: status,
+      }),
+      headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
+    };
+    //=====
+    
+    fetch(`https://gpmuk.com/loginreg/updateaction.php`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success === 1) {
+          this.setState({
+            operatorData: [],
+          });
+          this.componentDidMount();
+        } else console.log("No Data or error", data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  updateNotes = (id) => {
+    this.setState({
+      openNotesModal: true,
+      notesid: id,
+    });
+  };
+
+  handleNotesSubmit = (e) => {
+    e.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({
+        email: localStorage.getItem("userEmail"),
+        issueid: this.state.notesid,
+        notes: this.state.notessection,
+      }),
+      headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
+    };
+    fetch(`https://gpmuk.com/loginreg/addnotetenant.php`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success === 1) {
+          this.setState({
+            openNotesModal: false,
+            notessection: "",
+            notesid: "",
+          });
+        } else console.log("No Data or error", data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  handleChangeNotes = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
   render() {
-      
     return (
       <>
         <div className="content">
@@ -164,7 +223,9 @@ class Dashboard extends React.Component {
                 </Card>
               </Col>
             </Row>
-            {this.state.operatorData.length === 0 ? <p>No Active jobs</p> : null}
+            {this.state.operatorData.length === 0 ? (
+              <p>No Active jobs</p>
+            ) : null}
             {this.state.operatorData.map((element, index) => {
               return (
                 <div key={index} className="card">
@@ -185,9 +246,76 @@ class Dashboard extends React.Component {
                       Contact no.: {element.tenant_contact_no}
                     </button>
                   </div>
+                  {element.status === "0" ? (
+                    <div>
+                      <button
+                        onClick={(e) => this.handleJobStatus(element.id, 1)}
+                        className="btn btn-primary ml-3"
+                      >
+                        Accept
+                      </button>
+                      <button
+                        onClick={(e) => this.handleJobStatus(element.id, 3)}
+                        className="btn btn-secondary ml-3"
+                      >
+                        Reject
+                      </button>
+
+                     
+                    </div>
+                  ) : null}
+
+                  {element.status === "1" ? (
+                    <div>
+                      <button
+                        onClick={(e) => this.updateNotes(element.id)}
+                        className="btn btn-primary ml-3"
+                      >
+                        Notes
+                      </button>
+
+                      <button
+                        onClick={(e) => this.updateCompletedStatus(element.id)}
+                        className="btn btn-success ml-3"
+                      >
+                        Completed
+                      </button>
+                    </div>
+                  ) : null}
                 </div>
               );
             })}
+          </div>
+          <div>
+            <Modal isOpen={this.state.openNotesModal}>
+              <form>
+                <ModalHeader>Update Notes</ModalHeader>
+                <ModalBody>
+                  <div className="form-group">
+                    <label htmlFor="exampleFormControlTextarea1">
+                      Enter Description
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="exampleFormControlTextarea1"
+                      rows="3"
+                      required
+                      name="notessection"
+                      onChange={(e) => this.handleChangeNotes(e)}
+                    ></textarea>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button type="button" color="primary" onClick={e => this.handleNotesSubmit(e)}>Save</Button>
+                  <Button
+                    color="secondary"
+                    onClick={(e) => this.setState({ openNotesModal: false })}
+                  >
+                    Close
+                  </Button>
+                </ModalFooter>
+              </form>
+            </Modal>
           </div>
         </div>
       </>
