@@ -219,6 +219,13 @@ class Dashboard extends React.Component {
                 <Card>
                   <CardHeader style={{ backgroundColor: "grey" }}>
                     <CardTitle tag="h4">Active jobs</CardTitle>
+                    <NavLink
+                      type="button"
+                      className="btn btn-success ml-3"
+                      to={"/admin/activejobs/9"}
+                    >
+                      Completed
+                    </NavLink>
                   </CardHeader>
                 </Card>
               </Col>
@@ -279,15 +286,7 @@ class Dashboard extends React.Component {
                         Completed
                       </NavLink>
                     </div>
-                  ) : (
-                    <NavLink
-                      type="button"
-                      className="btn btn-success ml-3"
-                      to={"/admin/activejobs/" + element.id}
-                    >
-                      Completed
-                    </NavLink>
-                  )}
+                  ) : null}
                 </div>
               );
             })}
