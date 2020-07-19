@@ -13,7 +13,7 @@ var routes = [
   },
   {
     path: "/activejobs/:id",
-    name: "Active",
+    name: "Active Jobs",
     icon: "nc-icon nc-bank",
     component: Activejobs,
     layout: "/admin",

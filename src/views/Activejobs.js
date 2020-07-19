@@ -9,7 +9,11 @@ class Activejobs extends React.Component {
     super(props);
 
     this.state = {
-      operatorData: [],
+      availableId: "",
+      completednotes: "",
+      capturedImage: "",
+      latitude: "",
+      longitude: "",
     };
   }
 
@@ -25,44 +29,104 @@ class Activejobs extends React.Component {
     // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
     var imageUrl = image;
     console.log(imageUrl);
+    this.setState({
+      capturedImage: imageUrl,
+    });
     // console.log(imageUrl);
     // Can be set to the src of an image now
     // imageElement.src = imageUrl;
   }
 
   async getCurrentPosition() {
-    try{
+    try {
       const coordinates = await Geolocation.getCurrentPosition();
-      console.log("Current", coordinates);
-    }catch(err){
+      console.log("Current", coordinates.coords.latitude);
+      this.setState({
+        latitude: coordinates.coords.latitude,
+        longitude: coordinates.coords.longitude,
+      });
+    } catch (err) {
       console.log(err);
     }
   }
 
   componentDidMount() {
-//    const id = this.props.match.params.id;
+    const id = this.props.match.params.id;
+    this.setState({
+      availableId: id,
+    });
+    this.getCurrentPosition();
   }
 
+  handleChangeNotes = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  completedJobStatus = () => {
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify({
+        email: localStorage.getItem("userEmail"),
+        issueid: this.state.availableId,
+        notes: this.state.completednotes,
+        status: 2,
+        siteimage: this.state.capturedImage
+      }),
+      headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
+    };
+    fetch(`https://gpmuk.com/loginreg/updatecompletionstatus.php`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success === 1) {
+          console.log("Status Updated");
+        } else console.log("No Data or error", data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   render() {
-    
     return (
       <>
         <div className="content">
-          <button
+          <form>
+            <div className="form-group">
+              <label htmlFor="exampleFormControlTextarea1">
+                Enter Notes of completiong
+              </label>
+              <textarea
+                className="form-control"
+                id="exampleFormControlTextarea1"
+                rows="3"
+                required
+                name="completednotes"
+                onChange={(e) => this.handleChangeNotes(e)}
+              ></textarea>
+              {isMobile ? (
+                <button
+                  className="btn btn-primary"
+                  onClick={(e) => this.takePicture()}
+                >
+                  Capture image
+                </button>
+              ) : null}
+              <button
+                className="btn btn-primary"
+                onClick={(e) => this.completedJobStatus()}
+              >
+                Completed
+              </button>
+            </div>
+          </form>
+          {/* <button
             className="btn btn-primary"
-            onClick={(e) => this.getCurrentPosition()}
+            
           >
             Get Current locations
-          </button>
-          {isMobile ? (
-            <button
-              className="btn btn-primary"
-              onClick={(e) => this.takePicture()}
-            >
-              Capture image
-            </button>
-          ) : null}
-         
+          </button> */}
         </div>
       </>
     );

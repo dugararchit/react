@@ -4,7 +4,9 @@ import React from "react";
 import CountUp from "react-countup";
 import { Card, CardHeader, CardBody, CardTitle, Row, Col } from "reactstrap";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-
+import {
+  NavLink
+} from "react-router-dom";
 class Dashboard extends React.Component {
   constructor() {
     super();
@@ -85,7 +87,7 @@ class Dashboard extends React.Component {
       headers: { Authorization: `Bearer ${localStorage.getItem("userData")}` },
     };
     //=====
-    
+
     fetch(`https://gpmuk.com/loginreg/updateaction.php`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
@@ -141,6 +143,7 @@ class Dashboard extends React.Component {
     });
   };
 
+  
   render() {
     return (
       <>
@@ -260,8 +263,6 @@ class Dashboard extends React.Component {
                       >
                         Reject
                       </button>
-
-                     
                     </div>
                   ) : null}
 
@@ -273,13 +274,13 @@ class Dashboard extends React.Component {
                       >
                         Notes
                       </button>
-
-                      <button
-                        onClick={(e) => this.updateCompletedStatus(element.id)}
+                      <NavLink
+                        type="button"
                         className="btn btn-success ml-3"
+                        to={"/admin/activejobs/" + element.id}
                       >
                         Completed
-                      </button>
+                      </NavLink>
                     </div>
                   ) : null}
                 </div>
@@ -306,7 +307,13 @@ class Dashboard extends React.Component {
                   </div>
                 </ModalBody>
                 <ModalFooter>
-                  <Button type="button" color="primary" onClick={e => this.handleNotesSubmit(e)}>Save</Button>
+                  <Button
+                    type="button"
+                    color="primary"
+                    onClick={(e) => this.handleNotesSubmit(e)}
+                  >
+                    Save
+                  </Button>
                   <Button
                     color="secondary"
                     onClick={(e) => this.setState({ openNotesModal: false })}
