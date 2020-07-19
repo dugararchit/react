@@ -22,7 +22,7 @@ class Activejobs extends React.Component {
 
   async takePicture() {
     const image = await Camera.getPhoto({
-      quality: 50,
+      quality: 30,
       allowEditing: false,
       resultType: CameraResultType.Base64,
     });
