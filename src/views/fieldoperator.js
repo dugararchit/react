@@ -43,11 +43,7 @@ class FieldOperator extends React.Component {
       });
   }
 
-  jobStatus = (id, status) => {
-    alert(id);
-    console.log(status);
-  }
-
+  
   render() {
     
     return (
@@ -84,13 +80,7 @@ class FieldOperator extends React.Component {
                   <button className="btn btn-warning ml-3">
                     Amount: {element.finalamount} £
                   </button>
-                  <br />
-                  <button onClick={element => this.jobStatus(element.id, "accept")} className="btn btn-primary ml-3">
-                    Accept
-                  </button>
-                  <button onClick={element => this.jobStatus(element.id, "reject")}  className="btn btn-danger ml-3">
-                    Reject
-                  </button>
+                  
                 </div>
               </div>
             );
